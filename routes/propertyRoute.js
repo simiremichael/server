@@ -16,6 +16,6 @@ propertyRoute.get('/:id', getProperty );
 propertyRoute.patch('/:id', agentAuth, updateProperty);
 propertyRoute.delete('/:id',  agentAuth, deleteProperty);
 propertyRoute.get('/agentProperties/:id', agentAuth, getPropertyByAgent);
-propertyRoute.get('/companyProperties/:id', companyPropertySearch);
+propertyRoute.get('/adminHomepage/propertyList/:id', companyPropertySearch);
 // propertyRoute.get('/searches/:id', companyPropertySearch);
 export default propertyRoute; 

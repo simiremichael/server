@@ -124,21 +124,19 @@ export const getPropertyByAgent = async (req, res) => {
   };
 
   export const companyPropertySearch = async (req, res) => {
-    //const {searchQuery,  page} = req.query;
-    const searchQuery = req.query.searchQuery === null ? '' : req.query.searchQuery 
-    const page = req.query.page || ''
+    const {searchQuery,  page} = req.query
     const { id, search } = req.params;
-    console.log(search, page, searchQuery)
-    const searchResult =  searchQuery ?{ location: new RegExp(searchQuery, 'i')} : {};
-    const filterId = id ? {companyId: id} : {};
+    console.log(page, searchQuery)
+    const searchResult =   new RegExp(searchQuery, 'i');
+
     const LIMIT = 5;
-    const startIndex = (Number(page) -1) * LIMIT;
-    const total = await Property.countDocuments({companyId: id});
-   
+    const startIndex = (Number(page) -1 ) * LIMIT;
+    const total = await Property.countDocuments({companyId: id}); 
+   console.log(searchResult)
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "Agent doesn't exist" });
     }
-    const companyProperties = await Property.find({ ...filterId, ...searchResult}).sort({_id: - 1}).limit(LIMIT).skip(startIndex);
+    const companyProperties = await Property.find({companyId: id, location: searchResult}).sort({_id: - 1}).limit(LIMIT).skip(startIndex);
     res.status(200).json({companyProperties, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)});
 }
 
