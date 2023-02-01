@@ -56,7 +56,9 @@ const propertySchema = new Schema({
     profilePicture: String,
     slideImages: [],
     phone: String,
-    email: String
+    email: String,
+    longitude: Number,
+    latitude: Number 
 
 //     category: string
 //     title: string

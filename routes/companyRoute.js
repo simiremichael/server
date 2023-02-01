@@ -6,7 +6,7 @@ const companyRoute = express.Router();
 
 companyRoute.post('/signin', signin);
 companyRoute.post('/signup', signup);
-companyRoute.post('/refresh', refresh)
+companyRoute.get('/refresh', refresh)
 companyRoute.post('/logout', logout)
 
 export default companyRoute;

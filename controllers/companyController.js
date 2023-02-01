@@ -7,19 +7,19 @@ export const signin = async (req, res) => {
 const {email, password} = req.body;
 try{
     const existingCompany = await Company.findOne({email});
-    if(!existingCompany) return res.status(404).json({ message: "Agent doesn't exist"})
+    if(!existingCompany) return res.status(404).json({ message: "Company doesn't exist"})
    
     const isPasswordCorrect = await bcrypt.compare(password, existingCompany.password);
     if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
     
-    const companyToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, 'test', { expiresIn: '5h' });
-    const companyRefreshToken = jwt.sign({email: existingCompany.email, id: existingCompany.id}, 'test', { expiresIn: '5d' });
+    const companyToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, 'test', { expiresIn: '1m' });
+    const refreshToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, 'test', { expiresIn: '7d' });
 
-    res.cookie('jwt', companyRefreshToken, 
+    res.cookie('jwt', refreshToken, 
     { httpOnly: true, secure: true, sameSite: 'None', 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
 
-    res.status(200).json({ result: existingCompany, companyToken , companyRefreshToken });
+    res.status(200).json({ result: existingCompany, companyToken  });
 } catch(error) {
 res.status(500).json({ message: "Something went wrong."});
 console.log(error);
@@ -56,17 +56,8 @@ export const refresh = async (req, res) => {
             const foundCompany = Company.findOne({email: decoded.email});
             if (!foundCompany) return res.status(401).json({message: 'unauthorized'});
             
-            const token = jwt.sign(
-                {
-                    "CompanyInfo": {
-                        "email": decoded.email,
-                        "role": role
-                    }
-                },
-                'test',
-                { expiresIn: '1h' }
-            );
-            res.json({companyToken})
+            const companyToken = jwt.sign({logo: foundCompany.logo, address: foundCompany.address, companyName: foundCompany.companyName, email: foundCompany.email, id: foundCompany._id},'test',{ expiresIn: '7d' });
+            res.json({companyToken});
         })
 
         }

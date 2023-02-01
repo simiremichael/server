@@ -9,17 +9,17 @@ try{
     const existingUser = await User.findOne({email});
     if(!existingUser) return res.status(404).json({ message: "Agent doesn't exist"})
    
-    const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
+    const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
     if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
     
-    const token = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '1h' });
-    const refreshToken = jwt.sign({email: existingUser.email, role: existingUser.role}, 'test', { expiresIn: '5d' });
+    const token = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '30s' });
+    const refreshToken = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '7d' });
 
     res.cookie('jws', refreshToken, 
     { httpOnly: true, secure: true, sameSite: 'None', 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
 
-    res.status(200).json({ result: existingUser, token, refreshToken });
+    res.status(200).json({ result: existingUser, token});
 } catch(error) {
 res.status(500).json({ message: "Something went wrong."});
 console.log(error);
@@ -28,7 +28,7 @@ console.log(error);
 
 export const refresh = async (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.jws) return res.sendStatus(401);
+    if (!cookies?.jws) return res.status(401).json({message: 'Unauthorized'});
     const refreshToken = cookies.jws;
    
     //                                  
@@ -37,11 +37,11 @@ export const refresh = async (req, res) => {
         refreshToken,
         'test',
         async (err, decoded) => {
-            if (err) return res.status(403).json({message: 'forbidden'});
+            if (err) return res.status(403).json({message: 'Forbidden'});
             const foundUser = User.findOne({email: decoded.email});
-            if (!foundUser) return res.status(401).json({message: 'unauthorized'});
+            if (!foundUser) return res.status(401).json({message: 'Unauthorized'});
             
-            const token= jwt.sign({ email: foundUser.email, id: foundUser._id}, 'test', { expiresIn: '7d' });
+            const token = jwt.sign({ email: foundUser.email, id: foundUser._id}, 'test', { expiresIn: '7d' });
             res.json({token})
         })
     }

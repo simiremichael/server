@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import express from 'express';
 import Property from "../models/propertyModel.js";
+import NodeGeocoder  from 'node-geocoder';
 
 const router = express.Router();
 
@@ -108,6 +109,16 @@ export const getProperty = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
+
+export const moreProperty = async (req, res) => {
+    const { location, price, propertyType, bedroom, category } = req.query;
+     try {
+         const data = await Property.find({location: location, propertyType: propertyType, price: price, bedroom: bedroom, category: category});
+         res.json(data);
+     } catch (error) {
+         res.status(404).json({ message: error.message})
+     }
+ }
              
 export const getPropertyByAgent = async (req, res) => {
    const {page} = req.query;
@@ -140,16 +151,74 @@ export const getPropertyByAgent = async (req, res) => {
     res.status(200).json({companyProperties, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)});
 }
 
+export const newProject = async (req, res) => {
+    const { searchParams, search, possession, sort, maxBed, minBed, minPrice, maxPrice, type, propertyGroup, page} = req.query;
+    // const search = searchParams.search
+    const datas = await Property.find();
+   const priceData = datas.map((i) => i.price )
+   const priceDatas = priceData.filter(i => i >= minPrice && i <=maxPrice);
+   const bedData = datas.map((b) => b.bedroom)
+   const bedDatas = bedData.filter(b => b >= minBed && b <= maxBed)
+   const searchResult = new RegExp(search, 'i');
+ 
+     try {
+         const LIMIT = 5;
+         const startIndex =(Number(page) - 1) * LIMIT;
+         const total = await Property.countDocuments({propertyGroup});
+         const data = await Property.find({propertyGroup: propertyGroup, location: searchResult, price: priceDatas, bedroom: bedDatas, buildingYear: possession, propertyType: type}).sort({_id: -1}).limit(LIMIT).skip(startIndex);
+         res.json({ data, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT), total });
+        //  console.log(propertyGroup, searchResult, priceDatas,  bedDatas,  possession, type)
+     } catch (error) {
+         res.status(404).json({ message: error.message})
+     }
+}
+
+export const offplan = async (req, res) => {
+    const { searchParams, search, possession, sort, maxBed, minBed, minPrice, maxPrice, type, propertyGroup, page} = req.query;
+    //const { id, search } = req.params;
+    const datas = await Property.find();
+    const priceData = datas.map((i) => i.price )
+    const priceDatas = priceData.filter(i => i >= minPrice && i <=maxPrice);
+    const bedData = datas.map((b) => b.bedroom)
+    const bedDatas = bedData.filter(b => b >= minBed && b <= maxBed)
+    const searchResult = new RegExp(search, 'i');
+  
+      try {
+          const LIMIT = 1;
+          const startIndex =(Number(page) - 1) * LIMIT;
+          const total = await Property.countDocuments({propertyGroup});
+          const data = await Property.find({propertyGroup: propertyGroup, location: searchResult, price: priceDatas, bedroom: bedDatas, buildingYear: possession, propertyType: type}).sort({_id: -1}).limit(LIMIT).skip(startIndex);
+          res.json({ data, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT), total });
+         //  console.log(propertyGroup, searchResult, priceDatas,  bedDatas,  possession, type)
+      } catch (error) {
+          res.status(404).json({ message: error.message})
+      }
+}
+
 export const createProperty = async (req, res) => {
 
+   //  AIzaSyCC1JhVqHUe1VqIqLaEpvBqdx76VI7m10Q
+    
     const { category, title, address1, address2, creator, bathroom, bedroom, buildingYear, companyAddress, 
         companyName, logo, location, description, electricity, images, kitchen, lotSize, lga, livingRoom, serviceCharge,
         paymentType, postCode,  price, propertyGroup, propertyTax, propertyTitle, propertyType, showerRoom,
         size, state, street, taxes, tour, uniqNo, ultilities, video, id, water, yearRenovated, comfort,
         condition, hvac, parking, pets, security, slideImages, phone, email} = req.body;
     //  const property = req.body;
+    const options = {
+        provider: 'google',
+      
+        // Optional depending on the providers
+        //fetch: customFetchImplementation,
+        apiKey: 'AIzaSyCC1JhVqHUe1VqIqLaEpvBqdx76VI7m10Q', // for Mapquest, OpenCage, Google Premier
+        formatter: null // 'gpx', 'string', ...
+      };
+      const geocoder = NodeGeocoder(options);
+      const response = await geocoder.geocode(address1);
+      const longitude = Number(response.map(long => long.longitude));
+      const latitude = Number(response.map(lat => lat.latitude));
 
-    const newProperty = new Property({  category, title, address1, address2, bedroom,  bathroom, buildingYear,
+    const newProperty = new Property({ longitude, latitude, category, title, address1, address2, bedroom,  bathroom, buildingYear,
         name: req.name, profilePicture: req.profilePicture, phone: req.phone, email: req.email,
         logo: req.companyLogo, companyAddress: req.companyAddress, companyName: req.companyName,
         location, description, electricity, images, kitchen, lotSize, lga, livingRoom, serviceCharge,
@@ -177,9 +246,21 @@ export const updateProperty = async (req, res) => {
         paymentType, postCode,  price, propertyGroup, propertyTax, propertyTitle, propertyType, showerRoom,
         size, state, street, tax, tour, uniqNo, ultilities, video, water, yearRenovated, comfort,
         condition, hvac, parking, pets, security, slideImages, phone, email } = req.body;
+        const options = {
+            provider: 'google',
+          
+            // Optional depending on the providers
+            //fetch: customFetchImplementation,
+            apiKey: 'AIzaSyCC1JhVqHUe1VqIqLaEpvBqdx76VI7m10Q', // for Mapquest, OpenCage, Google Premier
+            formatter: null // 'gpx', 'string', ...
+          };
+          const geocoder = NodeGeocoder(options);
+          const response = await geocoder.geocode(address1);
+          const longitude = Number(response.map(long => long.longitude));
+          const latitude = Number(response.map(lat => lat.latitude));
 
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
-    const updatedProperty = { category, title, address1, address2, bathroom, bathroom, buildingYear, phone: req.phone, email: req.email,
+    const updatedProperty = { longitude, latitude, category, title, address1, address2, bathroom, bathroom, buildingYear, phone: req.phone, email: req.email,
         category,location, description, electricity, images, kitchen, lotSize, lga, livingRoom, serviceCharge,
         paymentType, postCode,  price, propertyGroup, propertyTax, propertyTitle, propertyType, showerRoom,
         size, state, street, tax, tour, uniqNo, ultilities, video, water, yearRenovated, comfort, slideImages,

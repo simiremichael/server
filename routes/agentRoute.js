@@ -6,7 +6,7 @@ const agentRoute = express.Router();
 
 agentRoute.post('/signin', signin);
 agentRoute.post('/signup', companyAuth, signup);
-agentRoute.post('/refresh', refresh);
+agentRoute.get('/refresh', refresh);
 agentRoute.post('/logout', logout);
 agentRoute.get('/:id', getAgent);
 agentRoute.patch('/:id',   companyAuth, updateAgent);

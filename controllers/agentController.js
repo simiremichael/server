@@ -10,18 +10,18 @@ export const signin = async (req, res) => {
         const existingAgent = await Agent.findOne({email});
         if(!existingAgent) return res.status(404).json({ message: "Agent doesn't exist"})
        
-        const isPasswordCorrect = await bcrypt.compare(password, existingAgent.password);
+        const isPasswordCorrect = bcrypt.compare(password, existingAgent.password);
         if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
         
-        const agentToken = jwt.sign({ phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, 'test', { expiresIn: '1d' });
-        const refreshToken = jwt.sign({email: existingAgent.email, id: existingAgent._id}, 'test', { expiresIn: '7d' });
+        const agentToken = jwt.sign({ phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, 'test', { expiresIn: '30s' });
+        const refreshToken = jwt.sign({phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, 'test', { expiresIn: '7d' });
    
          
         res.cookie('jwa', refreshToken, 
         { httpOnly: true, secure: true, sameSite: 'None', 
         maxAge: 7 * 24 * 60 * 10 * 1000 });
 
-        res.status(200).json({ result: existingAgent, agentToken, refreshToken });
+        res.status(200).json({ result: existingAgent, agentToken });
     } catch(error) {
     res.status(500).json({ message: "Something went wrong."});
     console.log(error);
@@ -57,7 +57,6 @@ export const refresh = async (req, res) => {
     const cookies = req.cookies;
     if (!cookies?.jwa) return res.sendStatus(401);
     const refreshToken = cookies.jwa;
-   console.log(refreshToken);
     //                                  
     // evaluate jwt 
     jwt.verify(
@@ -69,7 +68,7 @@ export const refresh = async (req, res) => {
             if (!foundAgent) return res.status(401).json({message: 'unauthorized'});
 
         //    const refreshData = Agent.findOne({email});
-            const agentToken= jwt.sign({ email: foundAgent.email, id: foundAgent._id}, 'test', { expiresIn: '7d' });
+            const agentToken= jwt.sign({ phone: foundAgent.phone, profilePicture: foundAgent.profilePicture, name: foundAgent.name, logo: foundAgent.logo, companyName: foundAgent.companyName, companyId: foundAgent.companyId, address: foundAgent.address, email: foundAgent.email, id: foundAgent._id}, 'test', { expiresIn: '7d' });
             
             res.status(200).json({agentToken})
         })
