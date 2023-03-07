@@ -91,3 +91,32 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: "Something went wrong."});
     }
 }
+
+export const getCompanies = async (req, res) => {
+    const {page} = req.query;
+ try {
+    //  const LIMIT = 8;
+    //  const startIndex =(Number(page) - 1) * LIMIT;
+    //  const total = await Agent.countDocuments({});
+
+     const companies = await Company.find()
+     //.sort({_id: -1}).limit(LIMIT).skip(startIndex);
+    
+     res.status(200).json({data: companies });
+     //, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)
+ } catch (error) {
+     res.status(404).json({message: error.message});
+ }
+}
+
+export const getCompany = async (req, res) => { 
+    const { id } = req.params;
+
+    try {
+        const agent = await Company.findById(id);
+        
+        res.status(200).json(agent);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}

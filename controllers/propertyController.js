@@ -149,7 +149,26 @@ export const getPropertyByAgent = async (req, res) => {
     }
     const companyProperties = await Property.find({companyId: id, location: searchResult}).sort({_id: - 1}).limit(LIMIT).skip(startIndex);
     res.status(200).json({companyProperties, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)});
-}
+};
+
+export const commercial = async (req, res) => {
+    const { searchParams, search, propertyGroup, category, sort, bed, bath, minPrice, maxPrice, type, page} = req.query;
+    // const search = searchParams.search
+    const datas = await Property.find();
+   const priceData = datas.map((i) => i.price )
+   const priceDatas = priceData.filter(i => i >= minPrice && i <=maxPrice);
+   const searchResult = new RegExp(search, 'i');
+    //console.log(searchResult, priceDatas, priceData, bed, bath);
+     try {
+         const LIMIT = 1;
+         const startIndex =(Number(page) -1) * LIMIT;
+         const total = await Property.countDocuments({propertyGroup});
+         const data = await Property.find({propertyGroup: propertyGroup, category: category, location: searchResult, price: priceDatas, bathroom: bath, bedroom: bed, propertyType: type}).sort({_id: -1}).limit(LIMIT).skip(startIndex);
+         res.json({ data, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT),total });
+     } catch (error) {
+         res.status(404).json({ message: error.message})
+     }
+ }
 
 export const newProject = async (req, res) => {
     const { searchParams, search, possession, sort, maxBed, minBed, minPrice, maxPrice, type, propertyGroup, page} = req.query;
@@ -187,7 +206,7 @@ export const offplan = async (req, res) => {
           const LIMIT = 1;
           const startIndex =(Number(page) - 1) * LIMIT;
           const total = await Property.countDocuments({propertyGroup});
-          const data = await Property.find({propertyGroup: propertyGroup, location: searchResult, price: priceDatas, bedroom: bedDatas, buildingYear: possession, propertyType: type}).sort({_id: -1}).limit(LIMIT).skip(startIndex);
+          const data = await Property.find({propertyGroup: propertyGroup, location: searchResult, price: priceDatas, bedroom: bedDatas, buildingYear: possession, propertyType: type    }).sort({_id: -1}).limit(LIMIT).skip(startIndex);
           res.json({ data, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT), total });
          //  console.log(propertyGroup, searchResult, priceDatas,  bedDatas,  possession, type)
       } catch (error) {
