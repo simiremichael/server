@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Agent from '../models/agentModel.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const agentAuth = async (req, res, next) => {
 
@@ -10,11 +13,10 @@ const agentAuth = async (req, res, next) => {
     }
 
     const agentToken = authHeader.split(' ')[1]
-   console.log(agentToken);
       
     jwt.verify(
         agentToken,
-        'test',
+        process.env.TOKEN_KEY,
         (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
             req.email = decoded.email;

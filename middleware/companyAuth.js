@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const companyAuth = async (req, res, next) => {
 
@@ -7,13 +10,10 @@ const companyAuth = async (req, res, next) => {
     if (!authHeader?.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Unauthorized' })
     }
-
     const companyToken  = authHeader.split(' ')[1]
-   console.log(companyToken );
-      
     jwt.verify(
         companyToken ,
-        'test',
+        process.env.TOKEN_KEY,
         (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
             req.email = decoded.email;

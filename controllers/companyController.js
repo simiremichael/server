@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Company from '../models/companyModel.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 export const signin = async (req, res) => {
 const {email, password} = req.body;
@@ -12,10 +14,10 @@ try{
     const isPasswordCorrect = await bcrypt.compare(password, existingCompany.password);
     if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
     
-    const companyToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, 'test', { expiresIn: '1m' });
-    const refreshToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, 'test', { expiresIn: '7d' });
+    const companyToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, process.env.TOKEN_KEY, { expiresIn: '1m' });
+    const refreshToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, process.env.TOKEN_KEY, { expiresIn: '7d' });
 
-    res.cookie('jwt', refreshToken, 
+    res.cookie(process.env.COOKIE_KEY, refreshToken, 
     { httpOnly: true, secure: true, sameSite: 'None', 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
 
@@ -50,13 +52,13 @@ export const refresh = async (req, res) => {
     // evaluate jwt 
     jwt.verify(
         refreshToken,
-        'test',
+        process.env.TOKEN_KEY,
         async (err, decoded) => {
             if (err) return res.status(403).json({message: 'forbidden'});
             const foundCompany = Company.findOne({email: decoded.email});
             if (!foundCompany) return res.status(401).json({message: 'unauthorized'});
             
-            const companyToken = jwt.sign({logo: foundCompany.logo, address: foundCompany.address, companyName: foundCompany.companyName, email: foundCompany.email, id: foundCompany._id},'test',{ expiresIn: '7d' });
+            const companyToken = jwt.sign({logo: foundCompany.logo, address: foundCompany.address, companyName: foundCompany.companyName, email: foundCompany.email, id: foundCompany._id}, process.env.TOKEN_KEY,{ expiresIn: '7d' });
             res.json({companyToken});
         })
 
@@ -65,7 +67,7 @@ export const refresh = async (req, res) => {
        export const logout = (req, res) => {
         const cookies = req.cookies;
         if (!cookies.jwt) return res.status(204)
-        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        res.clearCookie(process.env.COOKIE_KEY, { httpOnly: true, sameSite: 'None', secure: true });
        res.json({message: 'cookie cleared'});
     }
                      

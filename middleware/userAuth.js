@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const userAuth = async (req, res, next) => {
 
@@ -8,13 +11,11 @@ const userAuth = async (req, res, next) => {
     if (!authHeader?.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Unauthorized' })
     }
-
     const token = authHeader.split(' ')[1]
-   console.log(token);
-      
+
     jwt.verify(
         token,
-        'test',
+        process.env.TOKEN_KEY,
         async (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
             if (token){

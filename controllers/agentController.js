@@ -2,6 +2,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Agent from '../models/agentModel.js';
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const signin = async (req, res) => {
     const {email, password} = req.body; 
@@ -13,11 +16,11 @@ export const signin = async (req, res) => {
         const isPasswordCorrect = bcrypt.compare(password, existingAgent.password);
         if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
         
-        const agentToken = jwt.sign({ phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, 'test', { expiresIn: '30s' });
-        const refreshToken = jwt.sign({phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, 'test', { expiresIn: '7d' });
+        const agentToken = jwt.sign({ phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, process.env.TOKEN_KEY, { expiresIn: '30s' });
+        const refreshToken = jwt.sign({phone: existingAgent.phone, profilePicture: existingAgent.profilePicture, name: existingAgent.name, logo: existingAgent.logo, companyName: existingAgent.companyName, companyId: existingAgent.companyId, address: existingAgent.address, email: existingAgent.email, id: existingAgent._id}, process.env.TOKEN_KEY, { expiresIn: '7d' });
    
          
-        res.cookie('jwa', refreshToken, 
+        res.cookie(process.env.COOKIE_KEY, refreshToken, 
         { httpOnly: true, secure: true, sameSite: 'None', 
         maxAge: 7 * 24 * 60 * 10 * 1000 });
 
@@ -85,7 +88,7 @@ export const refresh = async (req, res) => {
             if (!foundAgent) return res.status(401).json({message: 'unauthorized'});
 
         //    const refreshData = Agent.findOne({email});
-            const agentToken= jwt.sign({ phone: foundAgent.phone, profilePicture: foundAgent.profilePicture, name: foundAgent.name, logo: foundAgent.logo, companyName: foundAgent.companyName, companyId: foundAgent.companyId, address: foundAgent.address, email: foundAgent.email, id: foundAgent._id}, 'test', { expiresIn: '7d' });
+            const agentToken= jwt.sign({ phone: foundAgent.phone, profilePicture: foundAgent.profilePicture, name: foundAgent.name, logo: foundAgent.logo, companyName: foundAgent.companyName, companyId: foundAgent.companyId, address: foundAgent.address, email: foundAgent.email, id: foundAgent._id}, process.env.TOKEN_KEY, { expiresIn: '7d' });
             
             res.status(200).json({agentToken})
         })
@@ -95,7 +98,7 @@ export const refresh = async (req, res) => {
        export const logout = (req, res) => {
         const cookies = req.cookies;
         if (!cookies.jwa) return res.status(204)
-        res.clearCookie('jwa', { httpOnly: true, sameSite: 'None', secure: true });
+        res.clearCookie(process.env.COOKIE_KEY, { httpOnly: true, sameSite: 'None', secure: true });
        res.json({message: 'cookie cleared'});
     }
 
