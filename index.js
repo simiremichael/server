@@ -30,7 +30,7 @@ app.use(cookieParser())
 // "https://server-beige-nine.vercel.app"]
 
  app.use(cors({
-  credentials: true,
+  
   origin: ['http://localhost:5000', 'https://server-beige-nine.vercel.app']
 }))
 
