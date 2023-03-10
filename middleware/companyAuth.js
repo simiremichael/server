@@ -11,9 +11,10 @@ const companyAuth = async (req, res, next) => {
         return res.status(401).json({ message: 'Unauthorized' })
     }
     const companyToken  = authHeader.split(' ')[1]
+    
     jwt.verify(
         companyToken ,
-        process.env.TOKEN_KEY,
+        process.env.REACT_APP_TOKEN_KEY,
         (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
             req.email = decoded.email;

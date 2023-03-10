@@ -16,7 +16,7 @@ const agentAuth = async (req, res, next) => {
       
     jwt.verify(
         agentToken,
-        process.env.TOKEN_KEY,
+        process.env.REACT_APP_TOKEN_KEY,
         (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
             req.email = decoded.email;

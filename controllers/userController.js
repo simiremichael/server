@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 export const signin = async (req, res) => {
 const {email, password} = req.body;
 try{
@@ -15,13 +14,12 @@ try{
     const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
     if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
     
-    const token = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.TOKEN_KEY, { expiresIn: '30s' });
-    const refreshToken = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.TOKEN_KEY, { expiresIn: '7d' });
+    const token = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.REACT_APP_TOKEN_KEY, { expiresIn: '30s' });
+    const refreshToken = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.REACT_APP_TOKEN_KEY, { expiresIn: '7d' });
 
-    res.cookie(process.env.COOKIE_KEY, refreshToken, 
+    res.cookie(process.env.REACT_APP_USER_COOKIE_KEY, refreshToken, 
     { httpOnly: true, secure: true, sameSite: 'None', 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
-
     res.status(200).json({ result: existingUser, token});
 } catch(error) {
 res.status(500).json({ message: "Something went wrong."});
@@ -32,19 +30,17 @@ console.log(error);
 export const refresh = async (req, res) => {
     const cookies = req.cookies;
     if (!cookies?.jws) return res.status(401).json({message: 'Unauthorized'});
-    const refreshToken = cookies.jws;
-   
-    //                                  
+    const refreshToken = cookies.jws;                                
     // evaluate jwt 
     jwt.verify(
         refreshToken,
-        process.env.TOKEN_KEY,
+        process.env.REACT_APP_TOKEN_KEY,
         async (err, decoded) => {
             if (err) return res.status(403).json({message: 'Forbidden'});
             const foundUser = User.findOne({email: decoded.email});
             if (!foundUser) return res.status(401).json({message: 'Unauthorized'});
             
-            const token = jwt.sign({ email: foundUser.email, id: foundUser._id}, process.env.TOKEN_KEY, { expiresIn: '7d' });
+            const token = jwt.sign({ email: foundUser.email, id: foundUser._id}, process.env.REACT_APP_TOKEN_KEY, { expiresIn: '7d' });
             res.json({token})
         })
     }
@@ -52,7 +48,7 @@ export const refresh = async (req, res) => {
     export const logout = (req, res) => {
         const cookies = req.cookies;
         if (!cookies.jws) return res.status(204)
-        res.clearCookie(process.env.COOKIE_KEY, { httpOnly: true, sameSite: 'None', secure: true });
+        res.clearCookie(process.env.REACT_APP_USER_COOKIE_KEY, { httpOnly: true, sameSite: 'None', secure: true });
        res.json({message: 'cookie cleared'});
     }
 
@@ -94,7 +90,7 @@ export const googleSignIn = async (req, res) => {
         googleId,
         picture
       });
-      const token = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.TOKEN_KEY, { expiresIn: '1h' });
+      const token = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.REACT_APP_TOKEN_KEY, { expiresIn: '1h' });
       res.status(200).json({ result, token });
     }
     } catch (error) {

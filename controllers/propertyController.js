@@ -302,6 +302,14 @@ export const updateProperty = async (req, res) => {
     res.json({message: 'Post deleted successfully'});
 
   }
+  export const companyProperties = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "Property doesn't exist" });
+    }
+    const companyProperty = await Property.find({ companyId: id });
+    res.status(200).json(companyProperty);
+  };
 
 //   export const likePost = async (req, res) => {
 //     const { id } = req.params;

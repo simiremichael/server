@@ -9,17 +9,14 @@ import companyRoute from './routes/companyRoute.js';
 import agentRoute from './routes/agentRoute.js' 
 import  cookieParser from'cookie-parser';
 
-
-
 const app = express();
+
 dotenv.config();
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
 // app.use(cors());
-
-
 
  app.use(cors({
   credentials: true,
@@ -31,7 +28,7 @@ app.use('/users', userRoute);
 app.use('/companies', companyRoute);
 app.use('/agents', agentRoute);
 
-const PORT = process.env.PORT|| 5000;
+const PORT = process.env.PORT || 5000;
 
 
 

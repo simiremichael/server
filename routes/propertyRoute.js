@@ -2,8 +2,8 @@ import express from 'express';
 import { getPropertyBySearch, moreProperty, getProperties, 
 createProperty, updateProperty, deleteProperty, getProperty,
  getPropertyByAgent, companyPropertySearch, getPropertyBySearchByBuy, 
- getPropertyBySearchByRent, newProject, offplan, commercial} 
- from '../controllers/propertyController.js';
+ getPropertyBySearchByRent, newProject, offplan, commercial, companyProperties} 
+  from '../controllers/propertyController.js';
 
 import agentAuth from '../middleware/agentAuth.js';
 
@@ -22,6 +22,6 @@ propertyRoute.get('/:id', getProperty );
 propertyRoute.patch('/:id', agentAuth, updateProperty);
 propertyRoute.delete('/:id',  agentAuth, deleteProperty);
 propertyRoute.get('/agentProperties/:id', agentAuth, getPropertyByAgent);
-propertyRoute.get('/adminHomepage/propertyList/:id', companyPropertySearch);
-// propertyRoute.get('/searches/:id', companyPropertySearch);
+propertyRoute.get('/adminHomepage/propertyList/:id', companyPropertySearch); 
+propertyRoute.get('/companyProperties/:id', companyProperties);
 export default propertyRoute; 
