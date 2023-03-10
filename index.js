@@ -21,7 +21,7 @@ app.use(cookieParser())
 app.use(cors({
   credentials: true,
   origin: ['http://localhost:3000',
-   'https://property-finder-server.vercel.app']
+   "https://server-ten-kappa.vercel.app"]
 }));
 
 //  app.use(cors({
