@@ -22,20 +22,17 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
- app.use(cors());
+ //app.use(cors());
 
 
-app.use(cors({
-  credentials: true,
-}));
+
 // origin: ['http://localhost:3000',
 // "https://server-beige-nine.vercel.app"]
 
-//  app.use(cors({
-//   credentials: true,
-//   origin: 'http://localhost:3000'
-//   property-finder-server.vercel.app
-// }))
+ app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000'
+}))
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
