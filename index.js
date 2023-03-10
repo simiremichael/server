@@ -21,7 +21,7 @@ app.use(cookieParser())
 app.use(cors({
   credentials: true,
   origin: ['http://localhost:3000',
-   "https://server-ten-kappa.vercel.app"]
+   "https://server-beige-nine.vercel.app"]
 }));
 
 //  app.use(cors({
