@@ -16,7 +16,7 @@ dotenv.config();
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
- app.use(cors());
+ //app.use(cors());
 
 
 // app.use((req, res, next) => {
@@ -24,10 +24,10 @@ app.use(cookieParser())
 //   // next();
 // }) 
 
-//  app.use(cors({
-//   credentials: 'include',
-//   origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
-// }))
+ app.use(cors({
+  credentials: 'include',
+  origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
+}))
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
