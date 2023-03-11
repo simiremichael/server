@@ -23,7 +23,7 @@ app.use(cookieParser())
 // origin: ['http://localhost:3000',
 // "https://server-beige-nine.vercel.app"]
 app.use((req, res, next) => {
-  res.header({"Access-Control-Allow-Origin": "http://localhost:3000", "content-type": "application/json"});
+  res.header({"Access-Control-Allow-Origin": "http://localhost:5000", "content-type": "application/json"});
   // next();
 }) 
 
