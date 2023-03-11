@@ -30,7 +30,6 @@ app.use((req, res, next) => {
     next();
 }) 
 
-
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
 app.use('/companies', companyRoute);
