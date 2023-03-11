@@ -19,10 +19,10 @@ app.use(cookieParser())
  //app.use(cors());
 
 
-// app.use((req, res, next) => {
-//   res.header({ "content-type": "application/json", "Access-Control-Allow-Credentials": true});
-//    next();
-// }) 
+app.use((req, res, next) => {
+  res.header({ "content-type": "application/json", "Access-Control-Allow-Credentials": "true"});
+   next();
+}) 
 
  app.use(cors({
   credentials: 'include',
