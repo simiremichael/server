@@ -20,7 +20,7 @@ app.use(cookieParser())
 
 
 app.use((req, res, next) => {
-  res.header({"Access-Control-Allow-Origin": "*", "content-type": "application/json"});
+  res.header({"Access-Control-Allow-Origin": "http://localhost:3000", "content-type": "application/json"});
    next();
 }) 
 
