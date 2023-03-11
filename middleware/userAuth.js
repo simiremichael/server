@@ -15,7 +15,7 @@ const userAuth = async (req, res, next) => {
 
     jwt.verify(
         token,
-        process.env.REACT_APP_TOKEN_KEY,
+       'test',
         async (err, decoded) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
             if (token){
