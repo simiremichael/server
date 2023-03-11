@@ -28,7 +28,7 @@ app.use(cookieParser())
   credentials: 'include',
   origin: ['http://localhost:3000', 'https://my-property-finder.vercel.app']
 },(req, res, next) => {
-  res.header({ "content-type": "application/json", "Access-Control-Allow-Credentials": 'true'});
+  res.header({ "content-type": "application/json", "Access-Control-Allow-Credentials": "true"});
 }))
 
 app.use('/properties', propertyRoute);
