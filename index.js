@@ -19,10 +19,10 @@ app.use(cookieParser())
  //app.use(cors());
 
 
-// app.use((req, res, next) => {
-//   res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app", "Content-Type": ["application/json"], "Access-Control-Allow-Credentials": "true"});
-//     next();
-// }) 
+app.use((req, res, next) => {
+  res.header({"Access-Control-Allow-Origin": "https://server-beige-nine.vercel.app", "Content-Type": ["application/json"], "Access-Control-Allow-Credentials": "true"});
+    next();
+}) 
 
  app.use(cors({
   credentials: 'include',
