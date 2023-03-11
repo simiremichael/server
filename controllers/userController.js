@@ -9,7 +9,7 @@ export const signin = async (req, res) => {
 const {email, password} = req.body;
 try{
     const existingUser = await User.findOne({email});
-    if(!existingUser) return res.status(404).json({ message: "Agent doesn't exist"})
+    if(!existingUser) return res.status(404).json({ message: "User doesn't exist"})
    
     const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
     if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
