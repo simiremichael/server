@@ -21,7 +21,7 @@ app.use(cookieParser())
 
 app.use((req, res, next) => {
   res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app", "Content-Type": ["application/json"], "Access-Control-Allow-Credentials": "true"});
-  //  next();
+    next();
 }) 
 
  app.use(cors({
