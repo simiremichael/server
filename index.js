@@ -28,6 +28,10 @@ app.use(cookieParser())
 
 // origin: ['http://localhost:3000',
 // "https://server-beige-nine.vercel.app"]
+app.use((req, res, next) => {
+  res.header({"Access-Control-Allow-Origin": "*"});
+  next();
+}) 
 
  app.use(cors({
   credentials: 'include',
