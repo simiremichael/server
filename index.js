@@ -19,15 +19,15 @@ app.use(cookieParser())
  //app.use(cors());
 
 
-// app.use((req, res, next) => {
-//   res.header({"Access-Control-Allow-Origin": "http://localhost:5000", "content-type": "application/json"});
-//   // next();
-// }) 
+app.use((req, res, next) => {
+  res.header({"Access-Control-Allow-Origin": "http://localhost:3000", "content-type": "application/json"});
+  // next();
+}) 
 
- app.use(cors({
-  credentials: 'include',
-  origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
-}))
+//  app.use(cors({
+//   credentials: 'include',
+//   origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
+// }))
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
