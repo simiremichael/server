@@ -14,7 +14,7 @@ try{
     const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
     if(!isPasswordCorrect ) return res.status(404).json({ message: "Invalid credentials."});
     
-    const token = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '30s' });
+    const token = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '1h' });
     const refreshToken = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '7d' });
 
     res.cookie('jws', refreshToken, 
