@@ -14,7 +14,7 @@
         ],
             "headers": [
               {
-                "source": "/(.*)",
+                "source": "./index.js",
                 "headers": [
                   {
                     "key": "X-Content-Type-Options",
