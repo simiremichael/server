@@ -18,17 +18,17 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
  //app.use(cors());
 
- app.use(cors({
-  credentials: 'include',
-  origin: ['http://localhost:3000', 'https://my-property-finder.vercel.app'],
-}))
-
-app.use((req, res, next) => {
+ app.use((req, res, next) => {
   res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
   res.header({"Access-Control-Allow-Credentials": "true" });
   res.header({"Content-Type": ["text/plain", charset=utf-8, "application/json"]});
     next();
 }) 
+
+ app.use(cors({
+  credentials: 'include',
+  origin: ['http://localhost:3000', 'https://my-property-finder.vercel.app'],
+}))
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
