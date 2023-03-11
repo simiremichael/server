@@ -20,7 +20,7 @@ app.use(cookieParser())
 
 
 app.use((req, res, next) => {
-  res.header({"Access-Control-Allow-Origin": "https://server-beige-nine.vercel.app", "content-type": "application/json"});
+  res.header({"Access-Control-Allow-Origin": "https://server-beige-nine.vercel.app" || 'http://localhost:3000', "content-type": "application/json"});
   // next();
 }) 
 
