@@ -24,10 +24,10 @@ app.use((req, res, next) => {
   // next();
 }) 
 
-//  app.use(cors({
-//   credentials: 'include',
-//   origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
-// }))
+ app.use(cors({
+  credentials: 'include',
+  // origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
+}))
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
