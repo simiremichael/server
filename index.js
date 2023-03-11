@@ -20,13 +20,13 @@ app.use(cookieParser())
 
 
 app.use((req, res, next) => {
-  res.header({"Access-Control-Allow-Origin": "https://server-beige-nine.vercel.app" || 'http://localhost:3000', "content-type": "application/json"});
-  // next();
+  res.header({"Access-Control-Allow-Origin": "*", "content-type": "application/json"});
+   next();
 }) 
 
  app.use(cors({
   credentials: 'include',
-  origin: ['http://localhost:3000' || 'https://server-beige-nine.vercel.app']
+  origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
 }))
 
 app.use('/properties', propertyRoute);
