@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
  app.use(cors({
   credentials: 'include',
-  // origin: ['http://localhost:3000', 'https://server-beige-nine.vercel.app']
+  origin: ['http://localhost:3000' || 'https://server-beige-nine.vercel.app']
 }))
 
 app.use('/properties', propertyRoute);
