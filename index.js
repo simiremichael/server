@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
   res.header({"Access-Control-Allow-Credentials": "true" });
  // res.header({"Content-Type": ["text/plain", "application/json"]});
-    next();
+    //next();
 }) 
 
 
