@@ -20,7 +20,7 @@ try{
     const refreshToken = jwt.sign({logo: existingCompany.logo, address: existingCompany.address, companyName: existingCompany.companyName, email: existingCompany.email, id: existingCompany._id}, process.env.REACT_APP_TOKEN_KEY, { expiresIn: '7d' });
 
     res.cookie(process.env.REACT_APP_COMPANY_COOKIE_KEY, refreshToken, 
-    { httpOnly: true, secure: true, sameSite: 'lax', 
+    { httpsOnly: true, secure: true, sameSite: 'none', 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
     res.status(200).json({ result: existingCompany, companyToken  });
 } catch(error) {
