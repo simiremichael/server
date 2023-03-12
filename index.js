@@ -19,7 +19,7 @@ app.use(cookieParser())
  //app.use(cors());
 
  app.use(cors({
-  //credentials: "include",
+  credentials: "include",
   origin: "https://my-property-finder.vercel.app",
 }))
 // app.use((req, res, next) => {
