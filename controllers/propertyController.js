@@ -63,7 +63,7 @@ export const getPropertyBySearch = async (req, res) => {
 }
 
 export const getPropertyBySearchByBuy = async (req, res) => {
-    res.set("Access-Control-Allow-Origin", "*");
+    //res.set("Access-Control-Allow-Origin", "*");
 
     const { searchParams, search, category, sort, bed, bath, minPrice, maxPrice, type, page} = req.query;
     // const search = searchParams.search
