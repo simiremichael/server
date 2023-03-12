@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const signin = async (req, res) => {
+  res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
 const {email, password} = req.body;
 try{
     const existingUser = await User.findOne({email});
@@ -28,6 +29,7 @@ console.log(error);
 }
 // process.env.REACT_APP_TOKEN_KEY
 export const refresh = async (req, res) => {
+  res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const cookies = req.cookies;
     if (!cookies?.jws) return res.status(401).json({message: 'Unauthorized'});
     const refreshToken = cookies.jws;                                
@@ -46,6 +48,7 @@ export const refresh = async (req, res) => {
     }
 
     export const logout = (req, res) => {
+      res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
         const cookies = req.cookies;
         if (!cookies.jws) return res.status(204)
         res.clearCookie('process.env.REACT_APP_USER_COOKIE_KEY', { httpOnly: true, sameSite: 'lax', secure: true });
@@ -53,6 +56,7 @@ export const refresh = async (req, res) => {
     }
 
 export const signup = async (req, res) => {
+  res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { email, password, role, confirmPassword, picture, family_name, given_name, firstName, lastName, phone} = req.body;
 
     try {
@@ -74,6 +78,7 @@ export const signup = async (req, res) => {
 }
 
 export const googleSignIn = async (req, res) => {
+  res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { picture, email, family_name, given_name, token, googleId } = req.body;
   
     try {

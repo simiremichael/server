@@ -6,6 +6,7 @@ import NodeGeocoder  from 'node-geocoder';
 const router = express.Router();
 
 export const getProperties = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
        const {page} = req.query;
     try {
         const LIMIT = 8;
@@ -43,6 +44,7 @@ export const getProperties = async (req, res) => {
 
 
 export const getPropertyBySearch = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
    const { search, toggle, type, minPrice, maxPrice, duration, selectBath, selectBed, page} = req.query;
    const datas = await Property.find();
   const priceData = datas.map((i) => i.price )
@@ -61,6 +63,7 @@ export const getPropertyBySearch = async (req, res) => {
 }
 
 export const getPropertyBySearchByBuy = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { searchParams, search, category, sort, bed, bath, minPrice, maxPrice, type, page} = req.query;
     // const search = searchParams.search
     const datas = await Property.find();
@@ -80,6 +83,7 @@ export const getPropertyBySearchByBuy = async (req, res) => {
      }
  }
  export const getPropertyBySearchByRent = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { searchParams, search, category, sort, bed, bath, minPrice, maxPrice, type, page} = req.query;
     // const search = searchParams.search
     const datas = await Property.find();
@@ -99,6 +103,7 @@ export const getPropertyBySearchByBuy = async (req, res) => {
  }
 
 export const getProperty = async (req, res) => { 
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { id } = req.params;
 
     try {
@@ -111,6 +116,7 @@ export const getProperty = async (req, res) => {
 }
 
 export const moreProperty = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { location, price, propertyType, bedroom, category } = req.query;
      try {
          const data = await Property.find({location: location, propertyType: propertyType, price: price, bedroom: bedroom, category: category});
@@ -121,6 +127,7 @@ export const moreProperty = async (req, res) => {
  }
              
 export const getPropertyByAgent = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
    const {page} = req.query;
      const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -135,6 +142,7 @@ export const getPropertyByAgent = async (req, res) => {
   };
 
   export const companyPropertySearch = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {searchQuery,  page} = req.query
     const { id, search } = req.params;
     console.log(page, searchQuery)
@@ -152,6 +160,7 @@ export const getPropertyByAgent = async (req, res) => {
 };
 
 export const commercial = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { searchParams, search, propertyGroup, category, sort, bed, bath, minPrice, maxPrice, type, page} = req.query;
     // const search = searchParams.search
     const datas = await Property.find();
@@ -171,6 +180,7 @@ export const commercial = async (req, res) => {
  }
 
 export const newProject = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { searchParams, search, possession, sort, maxBed, minBed, minPrice, maxPrice, type, propertyGroup, page} = req.query;
     // const search = searchParams.search
     const datas = await Property.find();
@@ -193,6 +203,7 @@ export const newProject = async (req, res) => {
 }
 
 export const offplan = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { searchParams, search, possession, sort, maxBed, minBed, minPrice, maxPrice, type, propertyGroup, page} = req.query;
     //const { id, search } = req.params;
     const datas = await Property.find();
@@ -215,7 +226,7 @@ export const offplan = async (req, res) => {
 }
 
 export const createProperty = async (req, res) => {
-
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
    //  AIzaSyCC1JhVqHUe1VqIqLaEpvBqdx76VI7m10Q
     
     const { category, title, address1, address2, creator, bathroom, bedroom, buildingYear, companyAddress, 
@@ -258,6 +269,7 @@ export const createProperty = async (req, res) => {
 }
 
 export const updateProperty = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { id } = req.params;
 
     const {  title, address1, address2, bathroom, buildingYear,logo, companyAddress, companyName,
@@ -294,6 +306,7 @@ export const updateProperty = async (req, res) => {
  }
 
  export const deleteProperty = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});             
     const {id} = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('no post with that id');
 
@@ -303,6 +316,7 @@ export const updateProperty = async (req, res) => {
 
   }
   export const companyProperties = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "Property doesn't exist" });

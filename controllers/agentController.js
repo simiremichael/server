@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const signin = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {email, password} = req.body; 
 
     try{
@@ -31,6 +32,7 @@ export const signin = async (req, res) => {
 };
 
 export const getAgents = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {page} = req.query;
  try {
     //  const LIMIT = 8;
@@ -48,6 +50,7 @@ export const getAgents = async (req, res) => {
 }
 
 export const getAgent = async (req, res) => { 
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { id } = req.params;
 
     try {
@@ -70,6 +73,7 @@ export const getAgentCompany = async (req, res) => {
   };
 
 export const refresh = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
    
     // const {email, password} = req.body; 
 
@@ -94,6 +98,7 @@ export const refresh = async (req, res) => {
         }       
 
        export const logout = (req, res) => {
+        res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
         const cookies = req.cookies;
         if (!cookies.jwa) return res.status(204)
         res.clearCookie(process.env.REACT_APP_AGENT_COOKIE_KEY, { httpOnly: true, sameSite: 'None', secure: true });
@@ -102,6 +107,7 @@ export const refresh = async (req, res) => {
 
 
 export const signup = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {role, email, password, profilePicture,companyName, logo, address, companyId, confirmPassword, id, state, location, company, firstName, lastName, phone} = req.body;
     try {
         const existingAgent = await Agent.findOne({email});
@@ -124,6 +130,7 @@ export const signup = async (req, res) => {
 
 
 export const updateAgent = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { id } = req.params;
 
     const { role, email, password, profilePicture, confirmPassword, state, location, company, name, phone} = req.body;
@@ -139,6 +146,7 @@ export const updateAgent = async (req, res) => {
  }
 
  export const deleteAgent = async (req, res) => {
+    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {id} = req.params;
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('no post with that id');
 
