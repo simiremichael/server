@@ -19,9 +19,11 @@ app.use(cookieParser())
  //app.use(cors());
 
  app.use(cors({
-  credentials: true,
   origin: ["https://my-property-finder.vercel.app", "http://localhost:3000"],
-  Headers: {"Access-Control-Allow-Origin": "*"}
+  preflightContinue: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  credentials: true,
 }))
 
 // app.use((req, res, next) => {
