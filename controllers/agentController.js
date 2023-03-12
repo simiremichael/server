@@ -22,7 +22,7 @@ export const signin = async (req, res) => {
    
          
         res.cookie(process.env.REACT_APP_AGENT_COOKIE_KEY, refreshToken, 
-        { httpOnly: true, secure: true, sameSite: 'lax', 
+        { httpsOnly: true, secure: true, sameSite: 'none', 
         maxAge: 7 * 24 * 60 * 60 * 1000 });
         res.status(200).json({ result: existingAgent, agentToken });
     } catch(error) {
