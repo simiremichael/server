@@ -6,7 +6,7 @@ dotenv.config();
 
 const userAuth = async (req, res, next) => {
 
-    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+    //res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
 
     const authHeader = req.headers.authorization || req.headers.Authorization
 

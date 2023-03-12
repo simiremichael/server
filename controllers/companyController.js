@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const signin = async (req, res) => {
-    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+    //res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
 const {email, password} = req.body;
 try{
     const existingCompany = await Company.findOne({email});
@@ -44,7 +44,7 @@ console.log(error);
 }
 
 export const refresh = async (req, res) => {
-    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+   // res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
    
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(401);
@@ -66,7 +66,7 @@ export const refresh = async (req, res) => {
         }
 
        export const logout = (req, res) => {
-        res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+        //res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
         const cookies = req.cookies;
         if (!cookies.jwt) return res.status(204)
         res.clearCookie(process.env.REACT_APP_COMPANY_COOKIE_KEY, { httpOnly: true, sameSite: 'None', secure: true });
@@ -75,7 +75,7 @@ export const refresh = async (req, res) => {
                      
 
 export const signup = async (req, res) => {
-    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+    //res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {logo, address, companyName, email, password, confirmPassword, area, state, L_G_A, agent,role, } = req.body;
 
     try {
@@ -98,7 +98,7 @@ export const signup = async (req, res) => {
 }
 
 export const getCompanies = async (req, res) => {
-    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+    //res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const {page} = req.query;
  try {
     //  const LIMIT = 8;
@@ -116,7 +116,7 @@ export const getCompanies = async (req, res) => {
 }
 
 export const getCompany = async (req, res) => { 
-    res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+   // res.set({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
     const { id } = req.params;
 
     try {
