@@ -19,8 +19,8 @@ app.use(cookieParser())
  //app.use(cors());
 
  app.use(cors({
-  credentials: 'include',
-  origin: 'https://my-property-finder.vercel.app',
+  credentials: "same-origin",
+  origin: "https://my-property-finder.vercel.app",
   header: { "Accept": "application/json", "Content-Type": ["application/json", "text/plain"]}
 }))
 
