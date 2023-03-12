@@ -16,22 +16,22 @@ dotenv.config();
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
- app.use(cors());
+ //app.use(cors());
 
-//  app.use(cors({
-//   credentials: "include",
-//   origin: "https://my-property-finder.vercel.app",
-//   header: {"Access-Control-Allow-Credentials": "true"},
-//   header: {"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"}
-// }))
-
-app.use((req, res, next) => {
+ app.use(cors({
   credentials: "include",
-  res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
-  res.header({"Access-Control-Allow-Credentials": "true" });
-  res.header({"Content-Type": "text/plain"});
-    next();
-}) 
+  origin: "https://my-property-finder.vercel.app",
+  header: {"Access-Control-Allow-Credentials": "true"},
+  header: {"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"}
+}))
+
+// app.use((req, res, next) => {
+//   credentials: "include",
+//   res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+//   res.header({"Access-Control-Allow-Credentials": "true" });
+//   res.header({"Content-Type": "text/plain"});
+//     next();
+// }) 
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
