@@ -23,7 +23,6 @@ app.use(cookieParser())
   preflightContinue: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
-  credentials: true,
 }))
 
 // app.use((req, res, next) => {
