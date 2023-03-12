@@ -18,7 +18,7 @@ try{
     const refreshToken = jwt.sign({email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: '7d' });
 
     res.cookie('jws', refreshToken, 
-    { httpOnly: true, secure: true, sameSite: 'None', 
+    { httpOnly: true, secure: true, sameSite: 'lax', 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
     res.status(200).json({ result: existingUser, token});
 } catch(error) {
