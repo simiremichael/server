@@ -13,6 +13,14 @@ const app = express();
 
 dotenv.config();
 
+
+app.use((req, res, next) => {
+  res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
+  res.header({"Access-Control-Allow-Credentials": "true" });
+  //res.header({"Content-Type": ["text/plain", "application/json"]});
+    next();
+}) 
+
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
@@ -23,13 +31,6 @@ app.use(cookieParser())
   origin: "https://my-property-finder.vercel.app",
   header: { "Accept": "application/json", "Content-Type": ["application/json", "text/plain"], "Access-Control-Allow-Credentials": "true" }
 }))
-
-// app.use((req, res, next) => {
-//   res.header({"Access-Control-Allow-Origin": "https://my-property-finder.vercel.app"});
-//   res.header({"Access-Control-Allow-Credentials": "true" });
-//   //res.header({"Content-Type": ["text/plain", "application/json"]});
-//     next();
-// }) 
 
 app.use('/properties', propertyRoute);
 app.use('/users', userRoute);
