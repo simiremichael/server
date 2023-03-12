@@ -27,6 +27,7 @@ app.use(cookieParser())
 app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "https://my-property-finder.vercel.app");
   res.set("Access-Control-Allow-Credentials", "true" );
+  res.header("Access-Control-Allow-Origin", "*");
     next();
 }) 
 
