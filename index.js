@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
  //app.use(cors());
 
- const frontend_url = NODE_ENV === 'production' ? 'https://my-property-finder.vercel.app' : "http://localhost:3000"
+ const frontend_url = process.env.NODE_ENV === 'production' ? 'https://my-property-finder.vercel.app' : "http://localhost:3000"
 
  app.use(cors({
   //origin: ["https://my-property-finder.vercel.app", "http://localhost:3000"],
@@ -29,7 +29,7 @@ app.use(cookieParser())
 }))
 
 app.use((req, res, next) => {
-  res.header(frontend_url);
+  res.header("Access-Control-Allow-Origin", frontend_url);
   res.header("Access-Control-Allow-Credentials", true );
   //res.header("Access-Control-Allow-Origin", "https://my-property-finder.vercel.app");
   if (req.method === "OPTIONS") {
