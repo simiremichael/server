@@ -19,7 +19,7 @@ try{
     const refreshToken = jwt.sign({email: existingUser.email, id: existingUser._id}, process.env.REACT_APP_TOKEN_KEY, { expiresIn: '7d' });
 
     res.cookie(process.env.REACT_APP_USER_COOKIE_KEY, refreshToken, 
-    { httpsOnly: true, secure: true, sameSite: 'none', 
+    { httpsOnly: true, secure: true, sameSite: 'none', httpOnly: true, 
     maxAge: 7 * 24 * 60 * 60 * 1000 });
     res.status(200).json({ result: existingUser, token});
 } catch(error) {
