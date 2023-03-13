@@ -21,8 +21,8 @@ app.use(cookieParser())
  app.use(cors({
   origin: ["https://my-property-finder.vercel.app", "http://localhost:3000"],
   preflightContinue: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
 }))
 
 app.use((req, res, next) => {
