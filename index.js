@@ -18,17 +18,20 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cookieParser())
  //app.use(cors());
 
+ const frontend_url = NODE_ENV === 'production' ? 'https://my-property-finder.vercel.app' : "http://localhost:3000"
+
  app.use(cors({
-  origin: ["https://my-property-finder.vercel.app", "http://localhost:3000"],
+  //origin: ["https://my-property-finder.vercel.app", "http://localhost:3000"],
+  origin: frontend_url,
   preflightContinue: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 }))
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header(frontend_url);
   res.header("Access-Control-Allow-Credentials", true );
-  res.header("Access-Control-Allow-Origin", "https://my-property-finder.vercel.app");
+  //res.header("Access-Control-Allow-Origin", "https://my-property-finder.vercel.app");
   if (req.method === "OPTIONS") {
     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
     return res.status(200).json({});
